@@ -31,3 +31,6 @@ shapely==2.1.2                     # Geometry operations (Polygon, MultiPolygon)
 # --- Rendering (CAD/SVG) ---
 ezdxf==1.4.3
 svgwrite==1.4.3
+qdrant_client 
+pandas 
+python-dotenv
