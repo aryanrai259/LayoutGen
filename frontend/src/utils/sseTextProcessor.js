@@ -191,7 +191,24 @@ class SSETextProcessor {
   processToken(text, stage, stageName) {
     // Ignore garbage
     if (this.isGarbage(text)) {
-      return []
+      return this.getCommentary()
+    }
+
+    // Phase 3: If backend sends structured stage_name and text, bypass regex extraction
+    if (stageName && text.length > 5) {
+      if (!this.seenTitles.has(text)) {
+        this.seenTitles.add(text)
+        this.commentary.push({
+          id: Date.now() + Math.random(),
+          title: stageName,
+          detail: text,
+          timestamp: Date.now()
+        })
+        if (this.commentary.length > this.maxCommentary) {
+          this.commentary.shift()
+        }
+      }
+      return [...this.commentary]
     }
 
     // Add to buffer
