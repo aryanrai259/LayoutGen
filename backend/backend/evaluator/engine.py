@@ -106,7 +106,8 @@ class EvaluationEngine:
             ratio = max(w, h) / max(0.1, min(w, h))
             
             # If ratio > 1.7 (Golden Ratio is 1.618), it's a "bowling alley" (bad design) unless it's a corridor
-            if ratio > 1.7 and "corridor" not in room.get("type", "").lower():
+            is_corridor = "circulation" in room.get("type", "").lower() or "corridor" in room.get("id", "").lower()
+            if ratio > 1.7 and not is_corridor:
                 gr_penalties += 1
                 errors.append(f"{room['id']} proportion is too extreme (1:{ratio:.1f}). Force a more square shape closer to 1:1.618.")
                 
