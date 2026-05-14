@@ -40,9 +40,10 @@ class FloorPlanRequest(BaseModel):
 # Helper to map frontend payload to backend engine format
 # ---------------------------------------------------------
 def map_request_to_engine(payload: FloorPlanRequest) -> dict:
+    # Convert frontend feet to backend meters
     return {
-        "plot_length": payload.height,
-        "plot_width": payload.width,
+        "plot_length": payload.height * 0.3048,
+        "plot_width": payload.width * 0.3048,
         "num_bedrooms": payload.rooms,
         "user_preferences": payload.description,
         "vaastu_enabled": True, # Defaulting to True for now

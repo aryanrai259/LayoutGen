@@ -46,38 +46,68 @@ def generate_floorplan_stream(user_request, output_dir="outputs"):
     yield {"type": "progress", "stage": 0, "stage_name": "Initialization", "text": "Waking up Architect and Engineer Agents..."}
 
     try:
-        # ---------------------------------------------------------
-        # PHASE 1: COMPOSITION (Architect Agent)
-        # ---------------------------------------------------------
-        yield {"type": "progress", "stage": 1, "stage_name": "Architect Agent", "text": "Querying Visual RAG and computing Room Adjacency Graph..."}
+        from backend.rag.retriever import MasterRetriever
+        from backend.evaluator.engine import EvaluationEngine
         
-        composer = FusionComposer()
-        state.topology = composer.compose(user_request)
+        # Initialize the global Retriever and Critic
+        retriever = MasterRetriever()
+        critic = EvaluationEngine(hard_rules_retriever=retriever)
         
-        yield {"type": "progress", "stage": 1, "stage_name": "Architect Agent", "text": f"Topology drafted: {len(state.topology.get('rooms', []))} rooms planned."}
+        while state.iteration < state.max_iterations:
+            state.iteration += 1
+            logger.info(f"🔄 Starting Iteration {state.iteration}/{state.max_iterations}...")
+            
+            # ---------------------------------------------------------
+            # PHASE 1: COMPOSITION (Architect Agent)
+            # ---------------------------------------------------------
+            yield {"type": "progress", "stage": 1, "stage_name": "Architect Agent", "text": f"Iteration {state.iteration}: Architect drafting topology..."}
+            
+            composer = FusionComposer()
+            
+            # If we have feedback from a previous failure, inject it into the request!
+            if state.errors:
+                user_request["critic_feedback"] = "\\n".join(state.errors)
+                yield {"type": "progress", "stage": 1, "stage_name": "Architect Agent", "text": "Architect is analyzing Critic feedback to fix layout..."}
+            
+            state.topology = composer.compose(user_request)
+            
+            # ---------------------------------------------------------
+            # PHASE 2: SOLVER (Engineer Agent)
+            # ---------------------------------------------------------
+            yield {"type": "progress", "stage": 2, "stage_name": "Engineer Agent", "text": "Engineer calculating geometry constraints..."}
+            solver = Z3FloorPlanSolver(state.topology, enable_grid_snapping=True)
+            solution = solver.solve()
 
-        # ---------------------------------------------------------
-        # PHASE 2: SOLVER (Engineer Agent)
-        # ---------------------------------------------------------
-        yield {"type": "progress", "stage": 2, "stage_name": "Engineer Agent", "text": "Translating topology into mathematical Z3 constraints..."}
-        
-        solver = Z3FloorPlanSolver(state.topology, enable_grid_snapping=True)
-        
-        # We can yield an intermediate solving state
-        yield {"type": "progress", "stage": 2, "stage_name": "Engineer Agent", "text": "Z3 Geometry Solver running... (This may take up to 15 seconds)"}
-        
-        # Blocking call to Z3
-        solution = solver.solve()
+            if solution["status"] != "success":
+                logger.error(f"❌ Engineer Failed: {solution.get('reason')}")
+                state.errors = [f"Z3 Solver Failed: {solution.get('reason')}"]
+                yield {"type": "progress", "stage": 4, "stage_name": "Evaluation", "text": f"Math failed: {solution.get('reason')}. Retrying..."}
+                continue # Try again!
 
-        if solution["status"] != "success":
-            logger.error(f"❌ Solver Failed: {solution.get('reason', 'Unknown Error')}")
-            yield {"type": "error", "stage": 5, "stage_name": "Error", "text": f"Math engine failed to pack rooms: {solution.get('reason')}"}
-            return
+            state.geometry = solution
 
-        state.geometry = solution
-
+            # ---------------------------------------------------------
+            # PHASE 3: EVALUATION (Critic Agent)
+            # ---------------------------------------------------------
+            yield {"type": "progress", "stage": 4, "stage_name": "Evaluation", "text": "Critic Agent checking BBMP laws and design ratios..."}
+            
+            evaluation = critic.evaluate(state.geometry)
+            
+            if evaluation["passed"] or state.iteration == state.max_iterations:
+                if evaluation["passed"]:
+                    yield {"type": "progress", "stage": 4, "stage_name": "Evaluation", "text": f"Layout Passed! Score: {evaluation['score']*100:.1f}%"}
+                else:
+                    yield {"type": "progress", "stage": 4, "stage_name": "Evaluation", "text": f"Max iterations reached. Forcing output. Score: {evaluation['score']*100:.1f}%"}
+                
+                # Exit the loop and render!
+                break
+            else:
+                # We failed, populate errors and loop!
+                state.errors = [evaluation["feedback"]]
+                yield {"type": "progress", "stage": 4, "stage_name": "Evaluation", "text": f"Critic found errors (Score {evaluation['score']*100:.1f}%). Triggering redesign..."}
+                
         # ---------------------------------------------------------
-        # PHASE 3: RENDERING (The Visuals)
+        # PHASE 4: RENDERING (The Visuals)
         # ---------------------------------------------------------
         yield {"type": "progress", "stage": 3, "stage_name": "Renderer", "text": "Drawing vector blueprint..."}
         
@@ -89,19 +119,13 @@ def generate_floorplan_stream(user_request, output_dir="outputs"):
         dxf_renderer = DXFRenderer(output_file=dxf_path)
         dxf_renderer.render(state.geometry)
 
-        # Yield the drafted SVG back to the client!
         try:
             with open(svg_path, "r") as f:
                 svg_content = f.read()
-            yield {"type": "svg", "svg": svg_content, "is_final": False, "label": "Draft Layout"}
+            yield {"type": "svg", "svg": svg_content, "is_final": False, "label": f"Iteration {state.iteration} Draft"}
         except Exception as e:
             logger.error(f"Failed to read SVG: {e}")
 
-        # ---------------------------------------------------------
-        # PHASE 4: FINAL REFINEMENT
-        # ---------------------------------------------------------
-        yield {"type": "progress", "stage": 4, "stage_name": "Evaluation", "text": "Applying final quality checks..."}
-        
         # Final SVG
         yield {"type": "svg", "svg": svg_content, "is_final": True, "label": "Final Engineered Layout"}
         
@@ -109,9 +133,9 @@ def generate_floorplan_stream(user_request, output_dir="outputs"):
             "type": "final",
             "text": "Agentic Generation Complete!",
             "metadata": {
-                "confidence": 0.92,
+                "confidence": evaluation.get("score", 0.9) * 100,
                 "bylaws_used": ["BBMP 2003", "Vaastu Shastra"],
-                "rooms_placed": len(solution.get("solution", []))
+                "rooms_placed": len(state.geometry.get("solution", []))
             }
         }
 

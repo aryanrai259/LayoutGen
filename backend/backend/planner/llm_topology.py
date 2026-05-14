@@ -156,6 +156,9 @@ CURRENT ADJACENCIES:
 USER REQUEST:
 {json.dumps(user_request, indent=2)}
 
+CRITIC FEEDBACK (PREVIOUS ITERATION FAILED DUE TO THESE ERRORS):
+{user_request.get('critic_feedback', 'None. This is the first iteration.')}
+
 REFERENCE PATTERNS:
 {rag_context}
 
@@ -166,6 +169,7 @@ Consider:
 - Living Hall should connect to Kitchen, Dining, and Corridor
 - Bedrooms should connect via Corridor (not directly to Living)
 - Bathrooms should connect to bedrooms or corridor
+- If there is CRITIC FEEDBACK, you MUST adjust your connections to resolve the errors (e.g., if a room was too small, try connecting it differently so Z3 has more space to pack it).
 - Follow reference pattern adjacencies where applicable
 
 Return JSON with "adjacencies" array only.
