@@ -28,7 +28,7 @@ class MasterRetriever:
         self.qdrant_url = os.getenv("QDRANT_URL", "http://localhost:6333")
         self.api_key = os.getenv("QDRANT_API_KEY", None)
         self.reg_collection = os.getenv("REGULATIONS_COLLECTION_NAME", "regulations_chunks")
-        self.pat_collection = os.getenv("PATTERNS_COLLECTION_NAME", "patterns_resplan")
+        self.pat_collection = os.getenv("PATTERNS_COLLECTION_NAME", "msd_patterns")
         self.model_name = os.getenv("EMBEDDING_MODEL_NAME", "all-MiniLM-L6-v2")
         
         # 1. Connect to AI Resources
@@ -76,9 +76,9 @@ class MasterRetriever:
                 payload = hit.payload or {}
                 results.append({
                     "id": hit.id,
-                    "text": payload.get("text", ""),
-                    "room_counts": payload.get("room_counts", {}),
-                    "original_index": payload.get("original_index", -1),
+                    "text": payload.get("description", ""),
+                    "room_counts": payload.get("rooms", []),
+                    "apartment_id": payload.get("apartment_id", ""),
                     "score": hit.score
                 })
             
