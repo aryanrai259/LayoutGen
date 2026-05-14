@@ -7,8 +7,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import List, Optional
 
-# Import the existing pipeline (we will refactor this to yield later in Phase 3)
-from main import generate_floorplan
+from main import generate_floorplan_stream
 
 app = FastAPI(
     title="LayoutGen API",
@@ -56,26 +55,26 @@ def map_request_to_engine(payload: FloorPlanRequest) -> dict:
 @app.post("/floor_plan/generate")
 async def generate_direct(payload: FloorPlanRequest):
     """
-    Standard blocking endpoint. Waits for full generation and returns final output.
+    Standard blocking endpoint. Consumes the stream and returns final output.
     """
     engine_request = map_request_to_engine(payload)
     
-    # Run the synchronous generate_floorplan in a thread to avoid blocking the event loop
-    result = await asyncio.to_thread(generate_floorplan, engine_request)
+    # Consume the generator to the end
+    final_svg = "<svg>Error</svg>"
+    error_msg = None
     
-    if result["status"] != "success":
-        return {"error": result["message"]}
-        
-    # Read the generated SVG file to return as a string
-    try:
-        with open(result["svg_path"], "r") as f:
-            svg_content = f.read()
-    except Exception as e:
-        svg_content = f"<svg>Error reading file: {str(e)}</svg>"
+    for event in generate_floorplan_stream(engine_request):
+        if event.get("type") == "error":
+            error_msg = event.get("text")
+        elif event.get("type") == "svg" and event.get("is_final"):
+            final_svg = event.get("svg")
+
+    if error_msg:
+        return {"error": error_msg}
 
     return {
-        "svg": svg_content,
-        "confidence": 0.85, # Placeholder until Evaluation Engine is wired
+        "svg": final_svg,
+        "confidence": 0.85,
         "bylaws_used": [payload.jurisdiction],
         "blueprints_referenced": ["RPLAN Dataset"],
         "summary": "Generated layout based on user preferences."
@@ -92,47 +91,26 @@ async def generate_stream(payload: FloorPlanRequest):
     engine_request = map_request_to_engine(payload)
     
     async def event_generator():
-        # --- MOCK STREAMING PHASE (To be replaced in Phase 3) ---
-        # Yield Stage 0: Initializing
-        yield f"event: progress\ndata: {json.dumps({'stage': 0, 'stage_name': 'Initialization', 'text': 'Starting engine...'})}\n\n"
-        await asyncio.sleep(1)
-        
-        # Yield Stage 1: Spatial Planning
-        yield f"event: progress\ndata: {json.dumps({'stage': 1, 'stage_name': 'Spatial Planning', 'text': 'LLM is mapping room topology...'})}\n\n"
-        await asyncio.sleep(1)
-        
-        # Yield Stage 2: Coordinates
-        yield f"event: progress\ndata: {json.dumps({'stage': 2, 'stage_name': 'Coordinates', 'text': 'Z3 Solver mapping geometry...'})}\n\n"
-        await asyncio.sleep(1)
-        
-        # --- RUN ACTUAL ENGINE ---
-        # Note: In Phase 3, we will modify Z3FloorPlanSolver to yield natively.
-        result = await asyncio.to_thread(generate_floorplan, engine_request)
-        
-        # Yield Stage 3: SVG Layout
-        yield f"event: progress\ndata: {json.dumps({'stage': 3, 'stage_name': 'SVG Layout', 'text': 'Drawing vector output...'})}\n\n"
-        
-        if result["status"] == "success":
-            try:
-                with open(result["svg_path"], "r") as f:
-                    svg_content = f.read()
-            except:
-                svg_content = "<svg>Error loading generated SVG.</svg>"
+        # Iterate over the true Agentic yields from main.py
+        for event_data in generate_floorplan_stream(engine_request):
+            
+            # Format according to our frontend requirements
+            event_type = event_data.get("type", "progress")
+            
+            if event_type == "progress":
+                yield f"event: progress\ndata: {json.dumps(event_data)}\n\n"
+            
+            elif event_type == "svg":
+                yield f"event: svg\ndata: {json.dumps(event_data)}\n\n"
                 
-            # Yield the SVG draft
-            yield f"event: svg\ndata: {json.dumps({'svg': svg_content, 'is_final': False, 'label': 'Draft Layout'})}\n\n"
-            await asyncio.sleep(1)
+            elif event_type == "error":
+                yield f"event: progress\ndata: {json.dumps(event_data)}\n\n"
+                
+            elif event_type == "final":
+                yield f"event: final_response\ndata: {json.dumps(event_data)}\n\n"
             
-            # Yield Stage 4: Refining
-            yield f"event: progress\ndata: {json.dumps({'stage': 4, 'stage_name': 'Refining', 'text': 'Applying final Evaluation Engine scoring...'})}\n\n"
-            await asyncio.sleep(1)
-            
-            # Yield final
-            yield f"event: final_response\ndata: {json.dumps({'text': 'Generation complete!', 'metadata': {'confidence': 0.88, 'bylaws_used': ['BBMP 2003']}})}\n\n"
-            # Final SVG payload
-            yield f"event: svg\ndata: {json.dumps({'svg': svg_content, 'is_final': True, 'label': 'Final Layout'})}\n\n"
-        else:
-            yield f"event: progress\ndata: {json.dumps({'stage': 5, 'stage_name': 'Error', 'text': result.get('message', 'Generation failed')})}\n\n"
+            # We add a tiny async sleep so FastAPI flushes the network buffer to the client
+            await asyncio.sleep(0.01)
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 

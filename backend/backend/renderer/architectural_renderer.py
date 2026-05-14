@@ -45,7 +45,8 @@ class ArchitecturalRenderer:
         width_px = int((max_w + 4) * self.scale) # Extra padding for labels
         height_px = int((max_h + 4) * self.scale)
         
-        dwg = svgwrite.Drawing(self.filename, size=(width_px, height_px))
+        dwg = svgwrite.Drawing(self.filename, size=('100%', '100%'))
+        dwg.viewbox(0, 0, width_px, height_px)
         dwg.add(dwg.rect(insert=(0, 0), size=('100%', '100%'), fill=self.styles["canvas_bg"]))
 
         # Grid
