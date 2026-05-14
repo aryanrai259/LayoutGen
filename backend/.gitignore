@@ -1,0 +1,116 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyCharm
+.idea/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Test Files
+test_*.py
+*_test.py
+backend/test_setup.py
+inspect_*.py
+inspect_data.py
+inspect_payload.py
+seed_rag.py
+patterns_dist.py
+
+# Test/Inspect Output Files
+resplan_sample_layout.json
+resplan_schema_summary.json
+final_output.json
+
+# Project Specific
+# Outputs
+outputs/
+*.dxf
+*.svg
+floorplan.svg
+floorplan.dxf
+
+# Datasets (large files)
+datasets/
+*.pkl
+*.pickle
+ResPlan.pkl
+
+
+
+# Qdrant Data
+qdrant_storage/
+.qdrant/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Documentation builds
+docs/_build/
+site/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+

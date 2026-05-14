@@ -1,0 +1,120 @@
+.nl-description-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.nl-description-header {
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nl-description-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.nl-description-typing {
+  display: flex;
+  gap: 4px;
+}
+
+.typing-indicator {
+  width: 6px;
+  height: 6px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  animation: typing 1.4s ease-in-out infinite;
+}
+
+.typing-indicator:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.nl-description-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-lg);
+}
+
+.nl-description-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.nl-description-text {
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-size: 0.9375rem;
+}
+
+.nl-description-text h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: var(--space-lg) 0 var(--space-md) 0;
+  color: var(--text-primary);
+}
+
+.nl-description-text h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: var(--space-md) 0 var(--space-sm) 0;
+  color: var(--text-primary);
+}
+
+.nl-description-text h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: var(--space-md) 0 var(--space-sm) 0;
+  color: var(--text-primary);
+}
+
+.nl-description-text ul {
+  margin: var(--space-md) 0;
+  padding-left: var(--space-lg);
+  list-style: disc;
+}
+
+.nl-description-text li {
+  margin: var(--space-xs) 0;
+  color: var(--text-secondary);
+}
+
+.nl-description-text strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.nl-description-text br {
+  line-height: 1.5;
+}

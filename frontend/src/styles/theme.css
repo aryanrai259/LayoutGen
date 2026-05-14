@@ -1,0 +1,41 @@
+:root {
+  /* Professional CAD Dark Mode Colors */
+  --color-primary: #22D3EE;
+  --color-secondary: #0F172A;
+  --color-accent: #22D3EE;
+  --color-success: #34D399;
+  --color-error: #F43F5E;
+
+  /* Backgrounds */
+  --bg-app: #0B1220;
+  --bg-surface: rgba(18, 25, 45, 0.85);
+  --bg-card: rgba(18, 25, 45, 0.85);
+
+  /* Text */
+  --text-primary: #E5E7EB;
+  --text-secondary: rgba(229, 231, 235, 0.7);
+
+  /* Borders */
+  --border-light: rgba(34, 211, 238, 0.15);
+  --border-glow: rgba(34, 211, 238, 0.3);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+
+  /* Shadows */
+  --shadow-sm: 0 6px 24px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 14px 48px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 20px rgba(34, 211, 238, 0.3);
+
+  /* Typography */
+  --font-main: 'Inter', system-ui, sans-serif;
+}

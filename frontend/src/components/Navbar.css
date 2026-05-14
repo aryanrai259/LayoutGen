@@ -1,0 +1,117 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.navbar-logo-highlight {
+  color: var(--color-primary);
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+.navbar-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  position: relative;
+  transition: color 0.3s ease;
+  padding-bottom: 2px;
+}
+
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  transition: width 0.3s ease;
+}
+
+.navbar-link:hover {
+  color: var(--text-primary);
+}
+
+.navbar-link:hover::after {
+  width: 100%;
+}
+
+.navbar-link-cta {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.navbar-link-cta:hover {
+  color: var(--color-accent);
+}
+
+.navbar-link-cta::after {
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+}
+
+.navbar-accent-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 20%,
+    var(--color-accent) 50%,
+    transparent 80%,
+    transparent 100%
+  );
+  opacity: 0.4;
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: var(--space-md);
+  }
+
+  .navbar-links {
+    gap: var(--space-lg);
+  }
+
+  .navbar-link {
+    font-size: 13px;
+  }
+
+  .navbar-logo {
+    font-size: 15px;
+  }
+}

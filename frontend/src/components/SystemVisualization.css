@@ -1,0 +1,145 @@
+.system-visualization {
+  width: 100%;
+  padding: var(--space-xl) 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.system-visualization-svg {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  min-height: 400px;
+}
+
+.visualization-group {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.visualization-group.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.visualization-node {
+  fill: rgba(18, 25, 45, 0.9);
+  stroke: rgba(34, 211, 238, 0.4);
+  stroke-width: 3;
+  filter: drop-shadow(0 8px 24px rgba(34, 211, 238, 0.3));
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
+}
+
+.visualization-group.animate .visualization-node {
+  stroke: var(--color-accent);
+  stroke-width: 3;
+  filter: drop-shadow(0 8px 32px rgba(34, 211, 238, 0.5));
+}
+
+.visualization-group:hover .visualization-node {
+  stroke: var(--color-accent);
+  stroke-width: 3;
+  filter: drop-shadow(0 12px 40px rgba(34, 211, 238, 0.6));
+  transform: scale(1.02);
+}
+
+.visualization-input {
+  fill: rgba(18, 25, 45, 0.9);
+}
+
+.visualization-engine {
+  fill: rgba(18, 25, 45, 0.9);
+}
+
+.visualization-output {
+  fill: rgba(18, 25, 45, 0.9);
+}
+
+.visualization-group {
+  cursor: pointer;
+}
+
+.visualization-group:hover .visualization-node {
+  fill: rgba(18, 25, 45, 0.95);
+}
+
+.visualization-label {
+  fill: var(--text-primary);
+  font-size: 24px;
+  font-weight: 700;
+  text-anchor: middle;
+  font-family: var(--font-main);
+  letter-spacing: -0.02em;
+}
+
+.visualization-sublabel {
+  fill: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 400;
+  text-anchor: middle;
+  font-family: var(--font-main);
+}
+
+.visualization-arrow {
+  stroke: url(#arrowGradient);
+  stroke-width: 3;
+  fill: none;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  opacity: 0;
+  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.5));
+}
+
+.visualization-arrow.animate {
+  animation: drawArrow 1s ease-out forwards;
+}
+
+@keyframes drawArrow {
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.visualization-arrow-head {
+  fill: var(--color-accent);
+  opacity: 0;
+  transform: scale(0);
+  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.8));
+}
+
+.visualization-arrow-head.animate {
+  animation: popIn 0.3s ease-out forwards;
+}
+
+@keyframes popIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.visualization-particle {
+  fill: var(--color-accent);
+  opacity: 0;
+}
+
+.visualization-particle.animate {
+  opacity: 1;
+  animation: particleGlow 2s infinite;
+}
+
+@keyframes particleGlow {
+  0%, 100% {
+    opacity: 0.6;
+    r: 3;
+  }
+  50% {
+    opacity: 1;
+    r: 4;
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "habitable_rooms": {
+    "min_area_sqm": 9.5,
+    "min_width_m": 2.4,
+    "min_height_m": 2.75,
+    "small_plot_exception": {
+      "condition": "plot_area <= 120sqm",
+      "min_area_sqm": 8.0
+    }
+  },
+  "kitchen": {
+    "min_area_sqm": 5.0,
+    "min_width_m": 1.8,
+    "min_height_m": 2.75,
+    "with_dining": {
+      "min_area_sqm": 7.5,
+      "min_width_m": 2.1
+    }
+  },
+  "bathroom": {
+    "min_area_sqm": 1.8,
+    "min_width_m": 1.2,
+    "min_height_m": 2.2
+  },
+  "wc": {
+    "min_area_sqm": 1.1,
+    "min_width_m": 0.9,
+    "min_height_m": 2.2
+  },
+  "combined_bath_wc": {
+    "min_area_sqm": 2.0,
+    "min_width_m": 1.2,
+    "min_height_m": 2.2
+  },
+  "stairs": {
+    "residential_min_width_m": 1.0,
+    "apartments_min_width_m": 1.5,
+    "min_tread_cm": 25,
+    "max_riser_cm": 19,
+    "min_headroom_m": 2.2
+  },
+  "setbacks_ground_floor": {
+    "note": "Simplified for standard plots > 9m width. See full logic in Z3 solver.",
+    "front_min_m": 1.5,
+    "rear_min_m": 1.5,
+    "side_min_m": 1.5
+  }
+}

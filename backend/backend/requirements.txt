@@ -1,0 +1,33 @@
+# --- Core Backend & API ---
+fastapi==0.125.0
+uvicorn==0.38.0
+python-dotenv==1.2.1
+requests==2.32.5                    # Required for your local test scripts (test_rag.py)
+
+# --- Data Validation & Config ---
+pydantic==2.12.5
+pydantic-settings==2.12.0    # CRITICAL: Needed for loading .env files in Pydantic V2
+
+# --- AI & RAG (The "Neuro" Brain) ---
+google-generativeai==0.8.6  # <--- NEW: Replaces OpenAI
+groq==1.0.0                  # LLM Topology Planner (Llama 3 via Groq)
+
+# --- RAG & Vector Database ---
+qdrant-client==1.16.2
+sentence-transformers==5.2.0
+langchain==1.2.0            # Optional: Only if you plan to use LangChain chains later
+langchain-community==0.4.1         # Optional: Extensions for LangChain
+
+# --- PDF & Table Extraction ---
+pdfplumber==0.11.8          # Best for text extraction (used in our ingest.py)
+camelot-py==1.0.9           # Best for table extraction
+opencv-python-headless==4.12.0.88  # Required for camelot-py table extraction
+
+# --- Solver & Geometry ---
+z3-solver==4.15.4.0
+numpy==2.2.6                       # Essential for geometric calculations
+shapely==2.1.2                     # Geometry operations (Polygon, MultiPolygon)
+
+# --- Rendering (CAD/SVG) ---
+ezdxf==1.4.3
+svgwrite==1.4.3

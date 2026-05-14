@@ -1,0 +1,62 @@
+{
+  "master_bedroom": {
+    "preferred": ["SW"],
+    "allowed": ["S", "W"],
+    "avoid": ["NE", "SE", "Center"],
+    "note": "South-West is the zone of stability/Mastery."
+  },
+  "bedroom": {
+    "preferred": ["NW"],
+    "allowed": ["W", "S", "SE"],
+    "avoid": ["SW", "NE"],
+    "note": "General bedroom or guest room."
+  },
+  "kids_bedroom": {
+    "preferred": ["W", "NW"],
+    "allowed": ["E", "N"],
+    "avoid": ["SW"],
+    "note": "West is good for children."
+  },
+  "kitchen": {
+    "preferred": ["SE"],
+    "allowed": ["NW"],
+    "avoid": ["NE", "SW", "N"],
+    "note": "South-East (Agni corner) is best. North-West is the alternative."
+  },
+  "living": {
+    "preferred": ["N", "NE", "E"],
+    "allowed": ["NW", "SE"],
+    "avoid": ["SW"],
+    "note": "North-East brings positive energy."
+  },
+  "dining": {
+    "preferred": ["W", "NW"],
+    "allowed": ["E", "N"],
+    "avoid": ["SW"],
+    "note": "West is favorable for dining."
+  },
+  "bathroom": {
+    "preferred": ["NW", "W"],
+    "allowed": ["S", "SE"],
+    "avoid": ["NE", "SW"],
+    "note": "Avoid NE (Eshanya) for toilets strictly."
+  },
+  "pooja": {
+    "preferred": ["NE"],
+    "allowed": ["E", "N"],
+    "avoid": ["S", "SW", "SE", "NW"],
+    "note": "North-East is the God corner."
+  },
+  "entrance": {
+    "preferred": ["NE", "N", "E"],
+    "allowed": ["NW", "SE"],
+    "avoid": ["SW", "S"],
+    "note": "Entrance determines the facing of the house."
+  },
+  "study": {
+    "preferred": ["NE", "N", "E"],
+    "allowed": ["W", "NW"],
+    "avoid": ["SW", "S"],
+    "note": "Facing East or North while studying is best."
+  }
+}

@@ -1,0 +1,307 @@
+/* Dark Theme - Professional CAD Style */
+.floor-plan-generator-dark {
+  min-height: 100vh;
+  background: #0B1220;
+  background-image: 
+    radial-gradient(circle at 1px 1px, rgba(34, 211, 238, 0.05) 1px, transparent 0);
+  background-size: 25px 25px;
+  padding: var(--space-lg);
+  position: relative;
+}
+
+/* Top Bar */
+.generator-top-bar-dark {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+  padding: var(--space-lg);
+  background: rgba(18, 25, 45, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.generator-page-title-dark {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #22D3EE;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+}
+
+.generator-actions-dark {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.cancel-btn-dark,
+.new-plan-btn-dark {
+  padding: var(--space-sm) var(--space-lg);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn-dark {
+  background: rgba(244, 63, 94, 0.2);
+  color: #F43F5E;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.cancel-btn-dark:hover {
+  background: rgba(244, 63, 94, 0.3);
+  border-color: rgba(244, 63, 94, 0.5);
+  box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+  transform: translateY(-1px);
+}
+
+.new-plan-btn-dark {
+  background: rgba(34, 211, 238, 0.2);
+  color: #22D3EE;
+  border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+.new-plan-btn-dark:hover {
+  background: rgba(34, 211, 238, 0.3);
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Input Form Layout (Idle State) */
+.input-form-layout-dark {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--space-xl) 0;
+  min-height: calc(100vh - 200px);
+}
+
+.input-form-center-dark {
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* Main Grid Layouts */
+.generator-main-grid-dark {
+  display: grid;
+  gap: var(--space-lg);
+  height: calc(100vh - 200px);
+  min-height: 600px;
+  transition: all 0.4s ease;
+}
+
+/* 2-Grid Layout (Streaming Active: 40% + 60%) */
+.generator-grid-2-dark {
+  grid-template-columns: 40% 60%;
+}
+
+/* 3-Grid Layout (Streaming Final: 20% + 20% + 60%) */
+.generator-grid-3-dark {
+  grid-template-columns: 20% 20% 60%;
+}
+
+/* 2-Grid Layout (Normal Final: 30% + 70%) */
+.generator-grid-normal-final {
+  grid-template-columns: 30% 70%;
+}
+
+.generator-column-dark {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Status Panel (for Normal Final) */
+.status-panel-dark {
+  background: rgba(18, 25, 45, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  border-radius: var(--radius-lg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.status-header-dark {
+  padding: var(--space-lg);
+  border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+  flex-shrink: 0;
+}
+
+.status-title-dark {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #22D3EE;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+}
+
+.status-content-dark {
+  flex: 1;
+  padding: var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-item-dark {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: rgba(11, 18, 32, 0.5);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+  border-radius: var(--radius-md);
+}
+
+.status-icon-dark {
+  font-size: 1.25rem;
+  color: #34D399;
+  text-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+}
+
+.status-message-dark {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+/* Error Banner */
+.error-banner-dark {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  max-width: 600px;
+  width: 90%;
+}
+
+.error-banner-content-dark {
+  background: rgba(244, 63, 94, 0.2);
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  box-shadow: 0 8px 32px rgba(244, 63, 94, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.error-icon-dark {
+  font-size: 1.25rem;
+  color: #F43F5E;
+}
+
+.error-message-dark {
+  flex: 1;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.875rem;
+}
+
+.error-dismiss-btn-dark {
+  padding: var(--space-xs) var(--space-md);
+  background: rgba(244, 63, 94, 0.3);
+  color: #F43F5E;
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error-dismiss-btn-dark:hover {
+  background: rgba(244, 63, 94, 0.4);
+  border-color: rgba(244, 63, 94, 0.6);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .generator-grid-3-dark {
+    grid-template-columns: 25% 25% 50%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .generator-main-grid-dark {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    height: auto;
+  }
+
+  .generator-grid-2-dark {
+    grid-template-columns: 1fr;
+  }
+
+  .generator-grid-3-dark {
+    grid-template-columns: 1fr;
+  }
+
+  .generator-left-column-dark {
+    height: 400px;
+  }
+
+  .generator-right-column-dark {
+    height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .floor-plan-generator-dark {
+    padding: var(--space-md);
+  }
+
+  .generator-top-bar-dark {
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: flex-start;
+  }
+
+  .generator-main-grid-dark {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+    gap: var(--space-md);
+  }
+
+  .generator-column-dark {
+    height: auto;
+    min-height: 300px;
+  }
+
+  .input-form-center-dark {
+    max-width: 100%;
+  }
+}
+
+/* Smooth transitions */
+.generator-main-grid-dark,
+.generator-column-dark {
+  transition: all 0.4s ease;
+}
+
+/* Fade animations for layout changes */
+.input-form-layout-dark,
+.generator-main-grid-dark {
+  animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
